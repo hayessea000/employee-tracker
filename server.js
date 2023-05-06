@@ -1,5 +1,5 @@
 const express = require('express');
-// Import and require mysql2
+const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
 const PORT = process.env.PORT || 3001;
@@ -13,9 +13,9 @@ const db = mysql.createConnection(
     host: 'localhost',
     user: 'root',
     password: 'sph12345',
-    database: 'movies_db'
+    database: 'employee_db'
   },
-  console.log(`Connected to the movies_db database.`)
+  console.log(`Connected to the employee_db database.`)
 );
 
 
