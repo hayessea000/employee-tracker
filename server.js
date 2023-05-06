@@ -1,12 +1,5 @@
-const express = require('express');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 const db = mysql.createConnection(
   {
@@ -67,33 +60,44 @@ inquirer
             // ????
         });
     }else if (data.starterQ == "add an employee"){
-        inquirer
-        .prompt([
-            {
-                type: 'input',
-                name: 'fName',
-                message: 'What is their first name?',
-            },
-            {
-                type: 'input',
-                name: 'lName',
-                message: 'What is their last name?',
-            },
-            {
-                type: 'input',
-                name: 'employeeRole',
-                message: 'What is the employees role?',
-            },
-            {
-                type: 'list',
-                message: 'Who is the employees manager?',
-                name: 'employeeMan',
-                // choices: Managers,
-            },
-        ])
-        .then((data) => {
-            // ????
-        });
+        console.log(data)
+        db.query("SELECT * FROM role",(err,res)=>{
+            if (err) throw err
+            console.log(res)
+            let roleChoices= res.map(({id, title})=>({
+                name:title,
+                value:id,
+            }))
+            inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'fName',
+                    message: 'What is their first name?',
+                },
+                {
+                    type: 'input',
+                    name: 'lName',
+                    message: 'What is their last name?',
+                },
+                {
+                    type: 'list',
+                    name: 'employeeRole',
+                    message: 'What is the employees role?',
+                    choices: roleChoices
+                },
+                {
+                    type: 'list',
+                    message: 'Who is the employees manager?',
+                    name: 'employeeMan',
+                    // choices: Managers,
+                },
+            ])
+            .then((data) => {
+                console.log(data)
+            });
+            })
+        
     }else if (data.starterQ == "update an employee role"){
         inquirer
         .prompt([
@@ -114,13 +118,4 @@ inquirer
             // ????
         });
     }
-});
-
-
-app.use((req, res) => {
-  res.status(404).end();
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
