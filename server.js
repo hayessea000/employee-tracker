@@ -31,12 +31,13 @@ let runFunction = function(){
             .prompt([
                 {
                     type: 'input',
-                    name: 'addDepartment',
+                    name: 'department_name',
                     message: 'What is the name of the department?',
                 },
             ])
             .then((data) => {
-                // ????
+                console.log(data)
+                // add department
             });
         }else if (data.starterQ == "add a role"){
             db.query("SELECT * FROM department",(err,res)=>{
