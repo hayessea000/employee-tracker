@@ -32,14 +32,6 @@ let runFunction = function(){
                 let departmentSearch= res
                 console.log(departmentSearch)
             })
-    
-            // db.query("SELECT * FROM department",(err,res)=>{
-            //     if (err) throw err
-            //     let departmentChoices= res.map(({id, department_name})=>({
-            //         name:department_name,
-            //         value:id,
-            //     }))
-            // SELECT * FROM course_names JOIN department ON course_names.department = department.id;
         }else if (data.starterQ == "view all roles"){
             db.query("SELECT role.id, role.title, role.salary, department.department_name FROM role JOIN department ON role.department_id = department.id",(err,res)=>{
                 if (err) throw err
@@ -47,6 +39,11 @@ let runFunction = function(){
                 console.log(roleSearch)
             })
         }else if (data.starterQ == "view all employees"){
+            db.query("SELECT e.id, e.first_name, e.last_name, role.title, role.salary, department.department_name, CONCAT(m.first_name, ', ', m.last_name) AS manager FROM employee e JOIN role ON e.role_id = role.id JOIN department ON role.department_id = department.id LEFT OUTER JOIN employee m ON e.manager = m.id ORDER BY e.id",(err,res)=>{
+                if (err) throw err
+                let employeeSearch= res
+                console.log(employeeSearch)
+            })
             console.log("view all employees")
         }else if (data.starterQ == "add a department"){
             inquirer
