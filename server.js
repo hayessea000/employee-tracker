@@ -117,27 +117,48 @@ let runFunction = function(){
             })
             
         }else if (data.starterQ == "update an employee role"){
-            inquirer
-            .prompt([
-                {
-                    type: 'list',
-                    message: 'What employee do you want to update?',
-                    name: 'employeeName',
-                    // choices: employee,
-                },
-                {
-                    type: 'list',
-                    message: 'What is there new role',
-                    name: 'updateRole',
-                    // choices: roles,
-                },
-            ])
-            .then((data) => {
-                // ????
+            db.query("SELECT * FROM employee",(err,res)=>{
+                if (err) throw err
+                let employeeSearch= res.map(({id, first_name, last_name})=>({
+                    name:`${first_name} ${last_name}`,
+                    value:id,
+                }))
+                inquirer
+                .prompt([
+                    {
+                        type: 'list',
+                        message: 'What employee do you want to update?',
+                        name: 'employeeName',
+                        choices: employeeSearch,
+                    },
+                ])
+                .then((data) => {
+                    let employeeSearchData= data
+                    db.query("SELECT * FROM role",(err,res)=>{
+                        if (err) throw err
+                        let roleChoices= res.map(({id, title})=>({
+                            name:title,
+                            value:id,
+                        }))
+                        inquirer
+                        .prompt([
+                            {
+                                type: 'list',
+                                message: 'What is there new role',
+                                name: 'updateRole',
+                                choices: roleChoices,
+                            },
+                        ])
+                        .then((data) => {
+                            let updateEmployeeFull = { id: employeeSearchData.employeeName, role_id: data.updateRole}
+                            console.log(updateEmployeeFull)
+                            // update employee
+                        });
+                    });
+                });
             });
         }
     });
-    runFunction()
 }
 
 runFunction()
