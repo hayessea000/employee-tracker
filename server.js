@@ -26,7 +26,13 @@ let runFunction = function(){
         },
     ])
     .then((data) => {
-        if (data.starterQ == "add a department"){
+        if (data.starterQ == "view all departments"){
+            console.log("hello")
+        }else if (data.starterQ == "view all roles"){
+            console.log("roles")
+        }else if (data.starterQ == "view all employees"){
+            console.log("view all employees")
+        }else if (data.starterQ == "add a department"){
             inquirer
             .prompt([
                 {
