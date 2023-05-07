@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const cTable = require('console.table')
 
 const db = mysql.createConnection(
   {
@@ -30,21 +31,20 @@ let runFunction = function(){
             db.query("SELECT * FROM department",(err,res)=>{
                 if (err) throw err
                 let departmentSearch= res
-                console.log(departmentSearch)
+                console.table(departmentSearch)
             })
         }else if (data.starterQ == "view all roles"){
             db.query("SELECT r.id, r.title, r.salary, d.department_name FROM role r JOIN department d ON r.department_id = d.id",(err,res)=>{
                 if (err) throw err
                 let roleSearch= res
-                console.log(roleSearch)
+                console.table(roleSearch)
             })
         }else if (data.starterQ == "view all employees"){
             db.query("SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.department_name, CONCAT(m.first_name, ', ', m.last_name) AS manager FROM employee e JOIN role r ON e.role_id = r.id JOIN department d ON r.department_id = d.id LEFT OUTER JOIN employee m ON e.manager = m.id ORDER BY e.id",(err,res)=>{
                 if (err) throw err
                 let employeeSearch= res
-                console.log(employeeSearch)
+                console.table(employeeSearch)
             })
-            console.log("view all employees")
         }else if (data.starterQ == "add a department"){
             inquirer
             .prompt([
