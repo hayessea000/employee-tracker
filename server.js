@@ -60,7 +60,6 @@ inquirer
             // ????
         });
     }else if (data.starterQ == "add an employee"){
-        console.log(data)
         db.query("SELECT * FROM role",(err,res)=>{
             if (err) throw err
             console.log(res)
@@ -86,17 +85,33 @@ inquirer
                     message: 'What is the employees role?',
                     choices: roleChoices
                 },
-                {
-                    type: 'list',
-                    message: 'Who is the employees manager?',
-                    name: 'employeeMan',
-                    // choices: Managers,
-                },
             ])
             .then((data) => {
                 console.log(data)
+                let addEmployeeOne = data
+                db.query("SELECT * FROM employee",(err,res)=>{
+                    if (err) throw err
+                    console.log(res)
+                    let managerChoices= res.map(({id, first_name, last_name})=>({
+                        name:`${first_name} ${last_name}`,
+                        value:id,
+                    }))
+                    inquirer
+                    .prompt([
+                        {
+                            type: 'list',
+                            message: 'Who is the employees manager?',
+                            name: 'employeeMan',
+                            choices: managerChoices,
+                        },
+                    ])
+                    .then((data) => {
+                        let addEmployeeFull = { first_name: addEmployeeOne.fName, last_name: addEmployeeOne.lName, role_id: addEmployeeOne.employeeRole, manager: data.employeeMan}
+                        console.log(addEmployeeFull)
+                    });
+                });
             });
-            })
+        })
         
     }else if (data.starterQ == "update an employee role"){
         inquirer
