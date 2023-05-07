@@ -33,13 +33,13 @@ let runFunction = function(){
                 console.log(departmentSearch)
             })
         }else if (data.starterQ == "view all roles"){
-            db.query("SELECT role.id, role.title, role.salary, department.department_name FROM role JOIN department ON role.department_id = department.id",(err,res)=>{
+            db.query("SELECT r.id, r.title, r.salary, d.department_name FROM role r JOIN department d ON r.department_id = d.id",(err,res)=>{
                 if (err) throw err
                 let roleSearch= res
                 console.log(roleSearch)
             })
         }else if (data.starterQ == "view all employees"){
-            db.query("SELECT e.id, e.first_name, e.last_name, role.title, role.salary, department.department_name, CONCAT(m.first_name, ', ', m.last_name) AS manager FROM employee e JOIN role ON e.role_id = role.id JOIN department ON role.department_id = department.id LEFT OUTER JOIN employee m ON e.manager = m.id ORDER BY e.id",(err,res)=>{
+            db.query("SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.department_name, CONCAT(m.first_name, ', ', m.last_name) AS manager FROM employee e JOIN role r ON e.role_id = r.id JOIN department d ON r.department_id = d.id LEFT OUTER JOIN employee m ON e.manager = m.id ORDER BY e.id",(err,res)=>{
                 if (err) throw err
                 let employeeSearch= res
                 console.log(employeeSearch)
