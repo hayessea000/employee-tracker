@@ -55,8 +55,10 @@ let runFunction = function(){
                 },
             ])
             .then((data) => {
-                console.log(data)
-                // add department
+                db.query(`INSERT INTO department (department_name) VALUES ("${data.department_name}");`,(err,res)=>{
+                    if (err) throw err
+                    console.log(`${data.department_name} added as a department`)
+                })
             });
         }else if (data.starterQ == "add a role"){
             db.query("SELECT * FROM department",(err,res)=>{
@@ -85,8 +87,10 @@ let runFunction = function(){
                     },
                 ])
                 .then((data) => {
-                    console.log(data)
-                    // add role
+                    db.query(`INSERT INTO role (title, salary, department_id) VALUES ("sales", 15000, 1),("${data.title}", ${data.salary}, ${data.department_id});`,(err,res)=>{
+                        if (err) throw err
+                        console.log(`${data.title} added as a role`)
+                    })
                 });
             });
         }else if (data.starterQ == "add an employee"){
