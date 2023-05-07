@@ -96,7 +96,6 @@ let runFunction = function(){
         }else if (data.starterQ == "add an employee"){
             db.query("SELECT * FROM role",(err,res)=>{
                 if (err) throw err
-                console.log(res)
                 let roleChoices= res.map(({id, title})=>({
                     name:title,
                     value:id,
@@ -121,11 +120,9 @@ let runFunction = function(){
                     },
                 ])
                 .then((data) => {
-                    console.log(data)
                     let addEmployeeOne = data
                     db.query("SELECT * FROM employee WHERE manager IS NULL",(err,res)=>{
                         if (err) throw err
-                        console.log(res)
                         let managerChoices= res.map(({id, first_name, last_name})=>({
                             name:`${first_name} ${last_name}`,
                             value:id,
@@ -141,8 +138,10 @@ let runFunction = function(){
                         ])
                         .then((data) => {
                             let addEmployeeFull = { first_name: addEmployeeOne.fName, last_name: addEmployeeOne.lName, role_id: addEmployeeOne.employeeRole, manager: data.employeeMan}
-                            console.log(addEmployeeFull)
-                            // write in data
+                            db.query(`INSERT INTO employee (first_name, last_name, role_id, manager) VALUES ("${addEmployeeFull.first_name}", "${addEmployeeFull.last_name}", ${addEmployeeFull.role_id}, ${addEmployeeFull.manager});`,(err,res)=>{
+                                if (err) throw err
+                                console.log(`${addEmployeeFull.first_name} ${addEmployeeFull.last_name} added as a employee`)
+                            })
                         });
                     });
                 });
