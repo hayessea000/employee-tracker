@@ -31,7 +31,7 @@ let runFunction = function(){
                 if (err) throw err
                 let departmentSearch= res
                 console.log(departmentSearch)
-        })
+            })
     
             // db.query("SELECT * FROM department",(err,res)=>{
             //     if (err) throw err
@@ -41,7 +41,11 @@ let runFunction = function(){
             //     }))
             // SELECT * FROM course_names JOIN department ON course_names.department = department.id;
         }else if (data.starterQ == "view all roles"){
-            console.log("roles")
+            db.query("SELECT role.id, role.title, role.salary, department.department_name FROM role JOIN department ON role.department_id = department.id",(err,res)=>{
+                if (err) throw err
+                let roleSearch= res
+                console.log(roleSearch)
+            })
         }else if (data.starterQ == "view all employees"){
             console.log("view all employees")
         }else if (data.starterQ == "add a department"){
