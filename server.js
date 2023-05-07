@@ -39,27 +39,35 @@ let runFunction = function(){
                 // ????
             });
         }else if (data.starterQ == "add a role"){
-            inquirer
-            .prompt([
-                {
-                    type: 'input',
-                    name: 'roleName',
-                    message: 'What is the name of the role?',
-                },
-                {
-                    type: 'input',
-                    name: 'roleSalary',
-                    message: 'What is the salary of the role?',
-                },
-                {
-                    type: 'list',
-                    message: 'What is the department the role is in?',
-                    name: 'roleDepartment',
-                    // choices: departments,
-                },
-            ])
-            .then((data) => {
-                // ????
+            db.query("SELECT * FROM department",(err,res)=>{
+                if (err) throw err
+                let departmentChoices= res.map(({id, department_name})=>({
+                    name:department_name,
+                    value:id,
+                }))
+                inquirer
+                .prompt([
+                    {
+                        type: 'input',
+                        name: 'title',
+                        message: 'What is the name of the role?',
+                    },
+                    {
+                        type: 'input',
+                        name: 'salary',
+                        message: 'What is the salary of the role?',
+                    },
+                    {
+                        type: 'list',
+                        message: 'What is the department the role is in?',
+                        name: 'department_id',
+                        choices: departmentChoices,
+                    },
+                ])
+                .then((data) => {
+                    console.log(data)
+                    // add role
+                });
             });
         }else if (data.starterQ == "add an employee"){
             db.query("SELECT * FROM role",(err,res)=>{
