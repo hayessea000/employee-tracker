@@ -27,7 +27,19 @@ let runFunction = function(){
     ])
     .then((data) => {
         if (data.starterQ == "view all departments"){
-            console.log("hello")
+            db.query("SELECT * FROM department",(err,res)=>{
+                if (err) throw err
+                let departmentSearch= res
+                console.log(departmentSearch)
+        })
+    
+            // db.query("SELECT * FROM department",(err,res)=>{
+            //     if (err) throw err
+            //     let departmentChoices= res.map(({id, department_name})=>({
+            //         name:department_name,
+            //         value:id,
+            //     }))
+            // SELECT * FROM course_names JOIN department ON course_names.department = department.id;
         }else if (data.starterQ == "view all roles"){
             console.log("roles")
         }else if (data.starterQ == "view all employees"){
