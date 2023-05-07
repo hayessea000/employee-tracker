@@ -32,18 +32,21 @@ let runFunction = function(){
                 if (err) throw err
                 let departmentSearch= res
                 console.table(departmentSearch)
+                runFunction()
             })
         }else if (data.starterQ == "view all roles"){
             db.query("SELECT r.id, r.title, r.salary, d.department_name FROM role r JOIN department d ON r.department_id = d.id",(err,res)=>{
                 if (err) throw err
                 let roleSearch= res
                 console.table(roleSearch)
+                runFunction()
             })
         }else if (data.starterQ == "view all employees"){
             db.query("SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.department_name, CONCAT(m.first_name, ', ', m.last_name) AS manager FROM employee e JOIN role r ON e.role_id = r.id JOIN department d ON r.department_id = d.id LEFT OUTER JOIN employee m ON e.manager = m.id ORDER BY e.id",(err,res)=>{
                 if (err) throw err
                 let employeeSearch= res
                 console.table(employeeSearch)
+                runFunction()
             })
         }else if (data.starterQ == "add a department"){
             inquirer
@@ -58,6 +61,7 @@ let runFunction = function(){
                 db.query(`INSERT INTO department (department_name) VALUES ("${data.department_name}");`,(err,res)=>{
                     if (err) throw err
                     console.log(`${data.department_name} added as a department`)
+                    runFunction()
                 })
             });
         }else if (data.starterQ == "add a role"){
@@ -90,6 +94,7 @@ let runFunction = function(){
                     db.query(`INSERT INTO role (title, salary, department_id) VALUES ("sales", 15000, 1),("${data.title}", ${data.salary}, ${data.department_id});`,(err,res)=>{
                         if (err) throw err
                         console.log(`${data.title} added as a role`)
+                        runFunction()
                     })
                 });
             });
@@ -141,6 +146,7 @@ let runFunction = function(){
                             db.query(`INSERT INTO employee (first_name, last_name, role_id, manager) VALUES ("${addEmployeeFull.first_name}", "${addEmployeeFull.last_name}", ${addEmployeeFull.role_id}, ${addEmployeeFull.manager});`,(err,res)=>{
                                 if (err) throw err
                                 console.log(`${addEmployeeFull.first_name} ${addEmployeeFull.last_name} added as a employee`)
+                                runFunction()
                             })
                         });
                     });
@@ -185,6 +191,7 @@ let runFunction = function(){
                             db.query(`UPDATE employee SET role_id = ${updateEmployeeFull.role_id} WHERE id = ${updateEmployeeFull.id};`,(err,res)=>{
                                 if (err) throw err
                                 console.log("employee has been updated")
+                                runFunction()
                             })
                         });
                     });
@@ -192,7 +199,6 @@ let runFunction = function(){
             });
         }
     })
-    .then(runFunction()) 
 }
 
 runFunction()
