@@ -182,14 +182,17 @@ let runFunction = function(){
                         ])
                         .then((data) => {
                             let updateEmployeeFull = { id: employeeSearchData.employeeName, role_id: data.updateRole}
-                            console.log(updateEmployeeFull)
-                            // update employee
+                            db.query(`UPDATE employee SET role_id = ${updateEmployeeFull.role_id} WHERE id = ${updateEmployeeFull.id};`,(err,res)=>{
+                                if (err) throw err
+                                console.log("employee has been updated")
+                            })
                         });
                     });
                 });
             });
         }
-    });
+    })
+    .then(runFunction()) 
 }
 
 runFunction()
